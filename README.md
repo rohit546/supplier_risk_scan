@@ -640,34 +640,45 @@ GEMINI_API_KEY=your_free_key_here
 
 ## 13b. Deploying to Railway
 
-The repo is a monorepo with two deployable services. On [Railway](https://railway.com), create **one project with two services**, both pointing at this same GitHub repo but with different **Root Directory** settings. Each service already ships a `railway.json` that tells Railway how to build and start it.
+This repo is a **monorepo** — backend and frontend live in separate folders. Railway must be told which folder each service uses, or the build fails in seconds (repo root has no `package.json` / `requirements.txt`).
+
+Create **one Railway project with two services**, both from the same GitHub repo.
+
+### Required settings (both services)
+
+For **each** service, open **Settings** and set:
+
+| Setting | Backend service | Frontend service |
+| --- | --- | --- |
+| **Root Directory** | `backend` | `frontend` |
+| **Config file path** | `/backend/railway.json` | `/frontend/railway.json` |
+
+> **Important:** `railway.json` does **not** follow the Root Directory. You must use the **full repo path** (`/backend/railway.json`, not `railway.json`). Without this, Railway builds from repo root and fails immediately.
+
+Each service builds from its own `Dockerfile` (Python 3.11 for backend, Node 22 for frontend).
 
 ### Service 1 — Backend (FastAPI)
 
-1. New Service → Deploy from GitHub repo → select this repo.
-2. Settings → **Root Directory**: `backend`
-3. Railway auto-detects Python, installs `requirements.txt`, and runs:
-   `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-4. (Optional) Variables → add `GEMINI_API_KEY` to enable AI reasoning. Without it the playbook fallback is used.
-5. Settings → Networking → **Generate Domain**. Note the public URL, e.g.
+1. New Service → Deploy from GitHub → select this repo.
+2. Set **Root Directory** = `backend` and **Config file path** = `/backend/railway.json`.
+3. (Optional) Variables → `GEMINI_API_KEY` for AI reasoning (empty = playbook fallback).
+4. Settings → Networking → **Generate Domain**. Copy the URL, e.g.
    `https://backend-production-xxxx.up.railway.app`
 
-The backend binds to Railway's injected `$PORT` and exposes a health check at `/api/health`.
+Health check: `/api/health`
 
 ### Service 2 — Frontend (TanStack Start / Nitro)
 
-1. New Service → Deploy from GitHub repo → same repo.
-2. Settings → **Root Directory**: `frontend`
-3. Variables → add **`VITE_API_URL`** set to the backend's public URL from step 5 above
-   (e.g. `https://backend-production-xxxx.up.railway.app`).
-   > This is a **build-time** variable — Vite inlines it during `npm run build`, so it must be set *before* the deploy builds. The WebSocket URL is derived from it automatically (`https` → `wss`).
-4. Railway runs `npm run build` then starts `node .output/server/index.mjs` (a self-contained Node SSR server that listens on `$PORT`).
-5. Settings → Networking → **Generate Domain** to get the public dashboard URL.
+1. New Service → same repo.
+2. Set **Root Directory** = `frontend` and **Config file path** = `/frontend/railway.json`.
+3. Variables → **`VITE_API_URL`** = backend public URL from step 4 above.
+   > **Build-time variable** — Vite inlines it during `docker build`. Set it **before** redeploying. WebSocket URL is derived automatically (`https` → `wss`).
+4. Settings → Networking → **Generate Domain**.
 
 ### After both are live
 
 - Open the frontend domain — it talks to the backend over HTTPS/WSS.
-- `CORS_ORIGINS` defaults to `*`, so no extra CORS config is required. To lock it down, set `CORS_ORIGINS` on the backend service to the frontend's domain.
+- `CORS_ORIGINS` defaults to `*`. To lock down, set it on the backend to the frontend domain.
 
 ---
 
