@@ -21,15 +21,7 @@ async def lifespan(app: FastAPI):
     settings = get_settings()
 
     store = Store(settings)
-    store.seed()
-    log.info("Seeded %d suppliers from fixtures", len(store.suppliers))
-
     llm = LLMClient(settings)
-    log.info(
-        "LLM provider=%s active=%s (fallback reasoning %s)",
-        llm.provider, llm.active, "disabled" if llm.active else "enabled",
-    )
-
     broadcaster = Broadcaster()
     agent = MonitorAgent(store, llm, broadcaster, settings)
 
@@ -37,7 +29,16 @@ async def lifespan(app: FastAPI):
     app.state.llm = llm
     app.state.broadcaster = broadcaster
 
-    task = asyncio.create_task(agent.run(), name="monitor-agent")
+    async def boot() -> None:
+        store.seed()
+        log.info("Seeded %d suppliers from fixtures", len(store.suppliers))
+        log.info(
+            "LLM provider=%s active=%s (fallback reasoning %s)",
+            llm.provider, llm.active, "disabled" if llm.active else "enabled",
+        )
+        await agent.run()
+
+    task = asyncio.create_task(boot(), name="monitor-agent")
     try:
         yield
     finally:
