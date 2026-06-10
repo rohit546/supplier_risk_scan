@@ -40,33 +40,35 @@ The problem is that humans cannot manually watch hundreds of suppliers every sin
 
 Before going further, here are the industry terms used in this project, explained simply:
 
-| Term | What it actually means |
-| --- | --- |
-| **Supplier / Vendor** | A company that sells you parts, materials, or services. |
-| **Procurement** | The department/job of buying things for a company. |
-| **Procurement Officer** | The person responsible for buying and managing suppliers. (In the app, this is "Alexandra Morgan, Chief Procurement Officer".) |
-| **Supply Chain** | The full network of suppliers, factories, and transport that gets a product made and delivered. |
-| **Portfolio** | The complete set of suppliers a company is working with. ("Portfolio risk" = the overall risk across all of them.) |
-| **Risk Dimension** | One category/angle of risk (for example, financial risk or compliance risk). |
-| **Tier** | How important a supplier is. **Tier 1** = most critical/strategic; **Tier 3** = least critical. |
-| **On-Time Delivery (OTD)** | The percentage of orders the supplier delivered on schedule. Higher is better. |
-| **Defect Rate** | The percentage of delivered items that were faulty. Lower is better. |
-| **Capacity Utilization** | How much of a factory's total production ability is being used. Too high (over-stretched) or too low (struggling) are both warning signs. |
-| **SLA (Service Level Agreement)** | A written promise about quality/speed (for example, "defects must stay below 2%"). Breaking it is a "breach". |
-| **DSO (Days Sales Outstanding)** | How many days a company takes to collect money it is owed. High numbers can signal cash-flow trouble. |
-| **Debt Ratio** | How much of the company is funded by debt. Higher means more financially fragile. |
-| **Profit Margin** | How much profit the company keeps from each sale. Thin margins mean little safety cushion. |
-| **Revenue Trend** | Whether the company's sales are growing (positive) or shrinking (negative). |
-| **Credit Score** | A number (300–850) measuring how financially trustworthy a company is. Higher is healthier. |
-| **ISO 9001** | An international quality-management certificate. If it expires, the supplier is no longer formally "qualified". |
-| **Audit** | An official inspection of the supplier. "Stale audit" means it has not been checked in a long time. |
-| **Geopolitical Risk** | Risk caused by a supplier's country — wars, sanctions, instability, trade restrictions. |
-| **Sovereign / Country Risk** | A score (0–100) for how risky a whole country is to do business with. |
-| **Trade Restriction / Tariff** | Government rules or taxes that make importing from a country harder or more expensive. |
-| **ESG (Environmental, Social, Governance)** | A measure of how responsibly a company behaves — pollution (Environmental), worker treatment (Social), honest management (Governance). |
-| **News Sentiment** | Whether recent news about the supplier is positive or negative (a number from -1 = very negative to +1 = very positive). |
-| **Mitigation** | The plan of action to reduce or fix a risk. |
-| **Acknowledge an Alert** | A user clicking to confirm "I have seen this alert and I am handling it." |
+
+| Term                                        | What it actually means                                                                                                                    |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Supplier / Vendor**                       | A company that sells you parts, materials, or services.                                                                                   |
+| **Procurement**                             | The department/job of buying things for a company.                                                                                        |
+| **Procurement Officer**                     | The person responsible for buying and managing suppliers. (In the app, this is "Alexandra Morgan, Chief Procurement Officer".)            |
+| **Supply Chain**                            | The full network of suppliers, factories, and transport that gets a product made and delivered.                                           |
+| **Portfolio**                               | The complete set of suppliers a company is working with. ("Portfolio risk" = the overall risk across all of them.)                        |
+| **Risk Dimension**                          | One category/angle of risk (for example, financial risk or compliance risk).                                                              |
+| **Tier**                                    | How important a supplier is. **Tier 1** = most critical/strategic; **Tier 3** = least critical.                                           |
+| **On-Time Delivery (OTD)**                  | The percentage of orders the supplier delivered on schedule. Higher is better.                                                            |
+| **Defect Rate**                             | The percentage of delivered items that were faulty. Lower is better.                                                                      |
+| **Capacity Utilization**                    | How much of a factory's total production ability is being used. Too high (over-stretched) or too low (struggling) are both warning signs. |
+| **SLA (Service Level Agreement)**           | A written promise about quality/speed (for example, "defects must stay below 2%"). Breaking it is a "breach".                             |
+| **DSO (Days Sales Outstanding)**            | How many days a company takes to collect money it is owed. High numbers can signal cash-flow trouble.                                     |
+| **Debt Ratio**                              | How much of the company is funded by debt. Higher means more financially fragile.                                                         |
+| **Profit Margin**                           | How much profit the company keeps from each sale. Thin margins mean little safety cushion.                                                |
+| **Revenue Trend**                           | Whether the company's sales are growing (positive) or shrinking (negative).                                                               |
+| **Credit Score**                            | A number (300–850) measuring how financially trustworthy a company is. Higher is healthier.                                               |
+| **ISO 9001**                                | An international quality-management certificate. If it expires, the supplier is no longer formally "qualified".                           |
+| **Audit**                                   | An official inspection of the supplier. "Stale audit" means it has not been checked in a long time.                                       |
+| **Geopolitical Risk**                       | Risk caused by a supplier's country — wars, sanctions, instability, trade restrictions.                                                   |
+| **Sovereign / Country Risk**                | A score (0–100) for how risky a whole country is to do business with.                                                                     |
+| **Trade Restriction / Tariff**              | Government rules or taxes that make importing from a country harder or more expensive.                                                    |
+| **ESG (Environmental, Social, Governance)** | A measure of how responsibly a company behaves — pollution (Environmental), worker treatment (Social), honest management (Governance).    |
+| **News Sentiment**                          | Whether recent news about the supplier is positive or negative (a number from -1 = very negative to +1 = very positive).                  |
+| **Mitigation**                              | The plan of action to reduce or fix a risk.                                                                                               |
+| **Acknowledge an Alert**                    | A user clicking to confirm "I have seen this alert and I am handling it."                                                                 |
+
 
 ---
 
@@ -74,21 +76,23 @@ Before going further, here are the industry terms used in this project, explaine
 
 The system's recommended actions use real procurement vocabulary. These are the terms you will see inside alerts and action plans, explained plainly:
 
-| Term | What it actually means |
-| --- | --- |
-| **RFQ (Request for Quotation)** | A formal message sent to one or more suppliers asking, "If we ordered this, what price and delivery time can you give us?" It is the first step to lining up a new or backup supplier. When an alert says *"Activate dual-source RFQ across pre-qualified alternates,"* it means: send a price request to other approved suppliers so you have a ready backup. |
-| **PO (Purchase Order)** | The official document that places an order with a supplier. "Suspend new POs" means: stop sending this supplier new orders until the problem is fixed. |
-| **Dual-Sourcing** | Deliberately buying the same part from **two** suppliers instead of one, so that if one fails, the other can keep you running. |
-| **Nearshoring** | Moving sourcing to a **closer, lower-risk country** (for example, from a distant unstable region to a neighboring stable one) to reduce delay and political risk. |
-| **Pre-Qualified Alternate** | A backup supplier that has already been vetted and approved, so you can switch to them quickly. |
-| **8D (Eight Disciplines)** | A standard step-by-step problem-solving method factories use to find the root cause of a defect and fix it. An "8D corrective-action request" formally asks the supplier to investigate and fix a quality problem. |
-| **Corrective Action Plan (CAP)** | A documented set of steps a supplier promises to take to fix a problem, with deadlines. |
-| **QBR (Quarterly Business Review)** | A formal meeting every three months where you and the supplier review performance and issues. |
-| **Landed Cost** | The **total** cost of a product once it actually arrives — price plus shipping, tariffs, insurance, and fees. Tariffs raise landed cost even if the sticker price is unchanged. |
-| **Safety Stock** | Extra inventory kept on hand as a buffer, so a delivery delay does not immediately stop production. |
-| **REACH / SVHC** | European chemical safety rules. **REACH** is the regulation; **SVHC** (Substances of Very High Concern) is its watch-list of dangerous chemicals. A supplier using a listed chemical must disclose it. |
-| **Section 301 Tariff** | A specific United States trade rule that can add import taxes on certain goods from certain countries. |
-| **DSO Watch / Credit Watch** | Keeping a close eye on a supplier's payment-collection speed and credit health because early financial warning signs appeared. |
+
+| Term                                | What it actually means                                                                                                                                                                                                                                                                                                                                         |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **RFQ (Request for Quotation)**     | A formal message sent to one or more suppliers asking, "If we ordered this, what price and delivery time can you give us?" It is the first step to lining up a new or backup supplier. When an alert says *"Activate dual-source RFQ across pre-qualified alternates,"* it means: send a price request to other approved suppliers so you have a ready backup. |
+| **PO (Purchase Order)**             | The official document that places an order with a supplier. "Suspend new POs" means: stop sending this supplier new orders until the problem is fixed.                                                                                                                                                                                                         |
+| **Dual-Sourcing**                   | Deliberately buying the same part from **two** suppliers instead of one, so that if one fails, the other can keep you running.                                                                                                                                                                                                                                 |
+| **Nearshoring**                     | Moving sourcing to a **closer, lower-risk country** (for example, from a distant unstable region to a neighboring stable one) to reduce delay and political risk.                                                                                                                                                                                              |
+| **Pre-Qualified Alternate**         | A backup supplier that has already been vetted and approved, so you can switch to them quickly.                                                                                                                                                                                                                                                                |
+| **8D (Eight Disciplines)**          | A standard step-by-step problem-solving method factories use to find the root cause of a defect and fix it. An "8D corrective-action request" formally asks the supplier to investigate and fix a quality problem.                                                                                                                                             |
+| **Corrective Action Plan (CAP)**    | A documented set of steps a supplier promises to take to fix a problem, with deadlines.                                                                                                                                                                                                                                                                        |
+| **QBR (Quarterly Business Review)** | A formal meeting every three months where you and the supplier review performance and issues.                                                                                                                                                                                                                                                                  |
+| **Landed Cost**                     | The **total** cost of a product once it actually arrives — price plus shipping, tariffs, insurance, and fees. Tariffs raise landed cost even if the sticker price is unchanged.                                                                                                                                                                                |
+| **Safety Stock**                    | Extra inventory kept on hand as a buffer, so a delivery delay does not immediately stop production.                                                                                                                                                                                                                                                            |
+| **REACH / SVHC**                    | European chemical safety rules. **REACH** is the regulation; **SVHC** (Substances of Very High Concern) is its watch-list of dangerous chemicals. A supplier using a listed chemical must disclose it.                                                                                                                                                         |
+| **Section 301 Tariff**              | A specific United States trade rule that can add import taxes on certain goods from certain countries.                                                                                                                                                                                                                                                         |
+| **DSO Watch / Credit Watch**        | Keeping a close eye on a supplier's payment-collection speed and credit health because early financial warning signs appeared.                                                                                                                                                                                                                                 |
+
 
 ---
 
@@ -112,13 +116,15 @@ Broken down:
 
 Every supplier is measured across five separate angles. Each gets its own 0–100 score, and they combine into one overall score.
 
-| Dimension | Plain-English question it answers | What it looks at |
-| --- | --- | --- |
-| **Financial** | "Could this supplier run out of money or go bankrupt?" | Credit score, days to collect payments, debt level, profit margin, revenue direction |
-| **Operational** | "Can this supplier actually deliver good products on time?" | On-time delivery, defect rate, factory capacity usage |
-| **Compliance** | "Is this supplier legally and officially in good standing?" | ISO 9001 certificate validity, rule violations, how recently they were audited |
-| **Geopolitical** | "Is this supplier's country a safe place to source from?" | Country risk score, active trade restrictions |
-| **ESG** | "Does this supplier behave responsibly?" | Environmental, social, and governance ratings, plus news sentiment |
+
+| Dimension        | Plain-English question it answers                           | What it looks at                                                                     |
+| ---------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| **Financial**    | "Could this supplier run out of money or go bankrupt?"      | Credit score, days to collect payments, debt level, profit margin, revenue direction |
+| **Operational**  | "Can this supplier actually deliver good products on time?" | On-time delivery, defect rate, factory capacity usage                                |
+| **Compliance**   | "Is this supplier legally and officially in good standing?" | ISO 9001 certificate validity, rule violations, how recently they were audited       |
+| **Geopolitical** | "Is this supplier's country a safe place to source from?"   | Country risk score, active trade restrictions                                        |
+| **ESG**          | "Does this supplier behave responsibly?"                    | Environmental, social, and governance ratings, plus news sentiment                   |
+
 
 **Risk bands** (used everywhere in the app, shown as colors):
 
@@ -146,6 +152,8 @@ flowchart TD
     Act --> Done([Risk managed])
     Ack --> Done
 ```
+
+
 
 ### Screen 1 — Overview Dashboard (the home page)
 
@@ -179,18 +187,20 @@ A look "under the hood": agent status, scans completed, alerts raised, which rea
 
 Here is the complete list of things a user can actually do, where they do it, and what happens behind the scenes.
 
-| Action | Where | What happens behind the scenes |
-| --- | --- | --- |
-| **Search suppliers** | Suppliers Directory | Filters the list instantly in the browser by name or country — no server call needed. |
-| **Filter by risk band** | Directory, Alerts | Shows only Low / Medium / High items. Instant, in the browser. |
-| **Sort by risk score** | Directory | Reorders the table highest-to-lowest or lowest-to-highest. |
-| **Open a supplier** | Dashboard, Directory, Alerts | Navigates to the detail page and asks the server for that supplier's **full** data (raw numbers + per-dimension explanations). |
-| **Read the diagnosis & action plan** | Supplier Detail | Displays the system's plain-English reasoning and recommended steps for that supplier. |
-| **Acknowledge one alert** | Alerts Center | Sends the alert's identifier to the server (`POST /api/alerts/ack`). The alert is marked "handled" everywhere, the critical-alert count drops, and the screen updates immediately (optimistically, before the server even replies). |
-| **Bulk acknowledge** | Alerts Center | Select several alerts with checkboxes and clear them all in one server call. |
-| **Switch alert tabs** | Alerts Center | Toggles between All, Unacknowledged, Critical, and Acknowledged views. |
-| **Watch the live feed** | Dashboard, Monitoring | The screen receives pushed updates over a live connection and re-renders by itself, no refresh. |
-| **Toggle a monitoring channel** | Monitoring | Visual demonstration of enabling/disabling a risk dimension (interface-only in the current build). |
+
+| Action                               | Where                        | What happens behind the scenes                                                                                                                                                                                                      |
+| ------------------------------------ | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Search suppliers**                 | Suppliers Directory          | Filters the list instantly in the browser by name or country — no server call needed.                                                                                                                                               |
+| **Filter by risk band**              | Directory, Alerts            | Shows only Low / Medium / High items. Instant, in the browser.                                                                                                                                                                      |
+| **Sort by risk score**               | Directory                    | Reorders the table highest-to-lowest or lowest-to-highest.                                                                                                                                                                          |
+| **Open a supplier**                  | Dashboard, Directory, Alerts | Navigates to the detail page and asks the server for that supplier's **full** data (raw numbers + per-dimension explanations).                                                                                                      |
+| **Read the diagnosis & action plan** | Supplier Detail              | Displays the system's plain-English reasoning and recommended steps for that supplier.                                                                                                                                              |
+| **Acknowledge one alert**            | Alerts Center                | Sends the alert's identifier to the server (`POST /api/alerts/ack`). The alert is marked "handled" everywhere, the critical-alert count drops, and the screen updates immediately (optimistically, before the server even replies). |
+| **Bulk acknowledge**                 | Alerts Center                | Select several alerts with checkboxes and clear them all in one server call.                                                                                                                                                        |
+| **Switch alert tabs**                | Alerts Center                | Toggles between All, Unacknowledged, Critical, and Acknowledged views.                                                                                                                                                              |
+| **Watch the live feed**              | Dashboard, Monitoring        | The screen receives pushed updates over a live connection and re-renders by itself, no refresh.                                                                                                                                     |
+| **Toggle a monitoring channel**      | Monitoring                   | Visual demonstration of enabling/disabling a risk dimension (interface-only in the current build).                                                                                                                                  |
+
 
 ### What the user does NOT have to do
 
@@ -231,20 +241,17 @@ sequenceDiagram
     Memory->>Screen: send them back
 ```
 
+
+
 ### In words
 
 1. **Starting point.** When the system starts, it loads **14 pre-made supplier profiles** from a file. Each profile contains raw business numbers (credit score, defect rate, certificate dates, country, and so on) — not risk scores.
-
 2. **First calculation.** The **scoring engine** reads those raw numbers and converts them into risk scores for each of the five dimensions, plus one overall score. It also builds a **30-day history** by simulating how the numbers would have evolved over the past month.
-
 3. **The watcher wakes up.** A **background agent** runs on a timer. Every 20 seconds it picks a few suppliers, nudges their raw numbers slightly (simulating new information — a late delivery, a credit downgrade, a bad news article), recalculates their scores, saves the new values, adds a point to their history, and checks whether any **danger threshold** was crossed.
-
 4. **Alerts get created.** If a supplier crosses a threshold (for example, defect rate goes above the 2% promised limit, or a certificate expires), the agent creates an **alert** and asks the reasoning engine (AI model or playbook) to write a recommendation and a step-by-step action plan.
-
 5. **The screen updates two ways:**
-   - **Live push (instant):** The server pushes every new event and alert to your dashboard through a constant open connection, so the screen updates by itself.
-   - **Polling (backup):** As a safety net, the dashboard also asks the server for fresh data every 15 seconds, in case the live connection drops.
-
+  - **Live push (instant):** The server pushes every new event and alert to your dashboard through a constant open connection, so the screen updates by itself.
+  - **Polling (backup):** As a safety net, the dashboard also asks the server for fresh data every 15 seconds, in case the live connection drops.
 6. **You take action.** You read the alerts, open supplier details, and click **Acknowledge** when you have handled something. That action is sent back to the server and instantly reflected everywhere.
 
 ### Where the data lives
@@ -262,13 +269,15 @@ Risk scores are **never made up**. They are calculated from raw numbers using fi
 
 This is the system's worst supplier. Here is its raw data as loaded from the fixtures file:
 
-| Category | Raw numbers |
-| --- | --- |
-| Financial | Credit score **520**, DSO **78 days**, debt ratio **0.58**, profit margin **3%**, revenue trend **-0.5** (shrinking) |
-| Operational | On-time delivery **86%**, defect rate **4.5%**, capacity utilization **94%** |
-| Compliance | ISO 9001 **not certified** (expired **47 days** ago), **3** violations in 12 months, last audit **412 days** ago |
-| Geopolitical | Country **Myanmar** (country-risk **92/100**), **2** active trade restrictions |
-| ESG | Environmental **55**, Social **48**, Governance **50**, news sentiment **-0.6** (negative) |
+
+| Category     | Raw numbers                                                                                                          |
+| ------------ | -------------------------------------------------------------------------------------------------------------------- |
+| Financial    | Credit score **520**, DSO **78 days**, debt ratio **0.58**, profit margin **3%**, revenue trend **-0.5** (shrinking) |
+| Operational  | On-time delivery **86%**, defect rate **4.5%**, capacity utilization **94%**                                         |
+| Compliance   | ISO 9001 **not certified** (expired **47 days** ago), **3** violations in 12 months, last audit **412 days** ago     |
+| Geopolitical | Country **Myanmar** (country-risk **92/100**), **2** active trade restrictions                                       |
+| ESG          | Environmental **55**, Social **48**, Governance **50**, news sentiment **-0.6** (negative)                           |
+
 
 #### Step 1 — Financial score
 
@@ -371,13 +380,15 @@ Overall = 0.65 × 71.5 + 0.35 × 96
 
 The same math on a healthy supplier (Germany, strong finances) shows how the formulas reward good performance.
 
-| Category | Raw numbers |
-| --- | --- |
-| Financial | Credit score **810**, DSO **38 days**, debt ratio **0.25**, profit margin **14%**, revenue trend **+0.3** |
-| Operational | On-time delivery **99.5%**, defect rate **0.5%**, capacity **78%** |
-| Compliance | ISO 9001 valid **320 days**, **0** violations, last audit **42 days** ago |
-| Geopolitical | Country **Germany** (country-risk **12/100**), **0** restrictions |
-| ESG | Environmental **82**, Social **85**, Governance **88**, sentiment **+0.7** |
+
+| Category     | Raw numbers                                                                                               |
+| ------------ | --------------------------------------------------------------------------------------------------------- |
+| Financial    | Credit score **810**, DSO **38 days**, debt ratio **0.25**, profit margin **14%**, revenue trend **+0.3** |
+| Operational  | On-time delivery **99.5%**, defect rate **0.5%**, capacity **78%**                                        |
+| Compliance   | ISO 9001 valid **320 days**, **0** violations, last audit **42 days** ago                                 |
+| Geopolitical | Country **Germany** (country-risk **12/100**), **0** restrictions                                         |
+| ESG          | Environmental **82**, Social **85**, Governance **88**, sentiment **+0.7**                                |
+
 
 ```
 Financial:    credit (850-810)/5.5 = 7.3; everything else below threshold → 0
@@ -402,10 +413,12 @@ Overall  = 0.65×4.96 + 0.35×11 = 3.22 + 3.85 = 7.07  →  7
 
 Compare the two suppliers' overall scores:
 
-| Supplier | Plain average of 5 dimensions | System's overall (worst-blended) |
-| --- | --- | --- |
-| GlobalTech | (49+79+72+96+63)/5 = 71.8 | **80** |
-| Reliable | (2+4+0+10+11)/5 = 5.4 | **7** |
+
+| Supplier   | Plain average of 5 dimensions | System's overall (worst-blended) |
+| ---------- | ----------------------------- | -------------------------------- |
+| GlobalTech | (49+79+72+96+63)/5 = 71.8     | **80**                           |
+| Reliable   | (2+4+0+10+11)/5 = 5.4         | **7**                            |
+
 
 For GlobalTech, the worst-dimension blend **pushes the score up** (from ~72 to 80) because geopolitical risk is severe (96). A naive average would understate the danger. This mirrors how a real risk manager thinks: *"One catastrophic problem is still a catastrophe, even if four other things look fine."*
 
@@ -433,6 +446,8 @@ flowchart TD
     Playbook --> Alert
 ```
 
+
+
 ### How the call works (Gemini example)
 
 When an alert fires and a key is present, the system sends one web request to Google's API. It includes:
@@ -443,11 +458,13 @@ When an alert fires and a key is present, the system sends one web request to Go
 
 The model replies with exactly three things:
 
-| Field | What it is | Example |
-| --- | --- | --- |
-| `recommendation` | One or two sentences — the immediate action | "Suspend new purchase orders and require updated certification within 14 days." |
-| `reasoning` | Why this risk matters, citing the numbers | "A lapsed ISO 9001 certificate invalidates supplier qualification for regulated programs and creates downstream audit liability." |
-| `mitigation_steps` | 3–4 ordered, concrete steps | 1. Request renewal evidence; 2. Suspend new POs; 3. Schedule third-party audit; 4. Flag affected parts |
+
+| Field              | What it is                                  | Example                                                                                                                           |
+| ------------------ | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `recommendation`   | One or two sentences — the immediate action | "Suspend new purchase orders and require updated certification within 14 days."                                                   |
+| `reasoning`        | Why this risk matters, citing the numbers   | "A lapsed ISO 9001 certificate invalidates supplier qualification for regulated programs and creates downstream audit liability." |
+| `mitigation_steps` | 3–4 ordered, concrete steps                 | 1. Request renewal evidence; 2. Suspend new POs; 3. Schedule third-party audit; 4. Flag affected parts                            |
+
 
 ### The safety net: the built-in playbook
 
@@ -559,14 +576,18 @@ flowchart LR
     Watcher -->|new alerts/events| LiveFeed
 ```
 
-| Part | Technology | Job |
-| --- | --- | --- |
-| Frontend | React 19 + TanStack Start | The dashboard the user sees |
-| Charts | Recharts | Gauges, radar, and trend graphs |
-| Backend | Python + FastAPI | The brain that scores and serves data |
-| Live updates | WebSocket | Pushes changes to the screen instantly |
-| Reasoning | Gemini / OpenAI / Anthropic (optional) | Writes alert recommendations |
-| Storage | In-memory (no database) | Holds all live data while running |
+
+
+
+| Part         | Technology                             | Job                                    |
+| ------------ | -------------------------------------- | -------------------------------------- |
+| Frontend     | React 19 + TanStack Start              | The dashboard the user sees            |
+| Charts       | Recharts                               | Gauges, radar, and trend graphs        |
+| Backend      | Python + FastAPI                       | The brain that scores and serves data  |
+| Live updates | WebSocket                              | Pushes changes to the screen instantly |
+| Reasoning    | Gemini / OpenAI / Anthropic (optional) | Writes alert recommendations           |
+| Storage      | In-memory (no database)                | Holds all live data while running      |
+
 
 ---
 
@@ -597,6 +618,7 @@ The backend now runs at `http://localhost:8000`. Open `http://localhost:8000/doc
 In a second terminal:
 
 ```bash
+cd frontend
 npm install
 npm run dev
 ```
@@ -616,36 +638,75 @@ GEMINI_API_KEY=your_free_key_here
 
 ---
 
+## 13b. Deploying to Railway
+
+The repo is a monorepo with two deployable services. On [Railway](https://railway.com), create **one project with two services**, both pointing at this same GitHub repo but with different **Root Directory** settings. Each service already ships a `railway.json` that tells Railway how to build and start it.
+
+### Service 1 — Backend (FastAPI)
+
+1. New Service → Deploy from GitHub repo → select this repo.
+2. Settings → **Root Directory**: `backend`
+3. Railway auto-detects Python, installs `requirements.txt`, and runs:
+   `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+4. (Optional) Variables → add `GEMINI_API_KEY` to enable AI reasoning. Without it the playbook fallback is used.
+5. Settings → Networking → **Generate Domain**. Note the public URL, e.g.
+   `https://backend-production-xxxx.up.railway.app`
+
+The backend binds to Railway's injected `$PORT` and exposes a health check at `/api/health`.
+
+### Service 2 — Frontend (TanStack Start / Nitro)
+
+1. New Service → Deploy from GitHub repo → same repo.
+2. Settings → **Root Directory**: `frontend`
+3. Variables → add **`VITE_API_URL`** set to the backend's public URL from step 5 above
+   (e.g. `https://backend-production-xxxx.up.railway.app`).
+   > This is a **build-time** variable — Vite inlines it during `npm run build`, so it must be set *before* the deploy builds. The WebSocket URL is derived from it automatically (`https` → `wss`).
+4. Railway runs `npm run build` then starts `node .output/server/index.mjs` (a self-contained Node SSR server that listens on `$PORT`).
+5. Settings → Networking → **Generate Domain** to get the public dashboard URL.
+
+### After both are live
+
+- Open the frontend domain — it talks to the backend over HTTPS/WSS.
+- `CORS_ORIGINS` defaults to `*`, so no extra CORS config is required. To lock it down, set `CORS_ORIGINS` on the backend service to the frontend's domain.
+
+---
+
 ## 14. Project Structure
 
 ```
 SCMDOJO/
 ├── backend/                       # The brain (Python + FastAPI)
-│   └── app/
-│       ├── main.py                # Starts the app and the background watcher
-│       ├── config.py              # All settings (timers, keys, weights)
-│       ├── schemas.py             # The shape of the data sent to the screen
-│       ├── core/
-│       │   ├── scoring.py         # Turns raw numbers into risk scores (the formulas above)
-│       │   ├── store.py           # Holds all live data in memory
-│       │   └── broadcast.py       # Pushes live updates to the screen
-│       ├── agent/
-│       │   ├── monitor.py         # The background watcher loop
-│       │   ├── llm.py             # AI model + built-in playbook fallback
-│       │   └── prompts.py         # Instructions given to the AI model
-│       ├── api/                   # The web endpoints the screen talks to
-│       └── data/
-│           ├── generator.py       # Builds the 30-day history
-│           └── fixtures.json      # The 14 starting suppliers (the raw numbers)
+│   ├── app/
+│   │   ├── main.py                # Starts the app and the background watcher
+│   │   ├── config.py              # All settings (timers, keys, weights)
+│   │   ├── schemas.py             # The shape of the data sent to the screen
+│   │   ├── core/
+│   │   │   ├── scoring.py         # Turns raw numbers into risk scores (the formulas above)
+│   │   │   ├── store.py           # Holds all live data in memory
+│   │   │   └── broadcast.py       # Pushes live updates to the screen
+│   │   ├── agent/
+│   │   │   ├── monitor.py         # The background watcher loop
+│   │   │   ├── llm.py             # AI model + built-in playbook fallback
+│   │   │   └── prompts.py         # Instructions given to the AI model
+│   │   ├── api/                   # The web endpoints the screen talks to
+│   │   └── data/
+│   │       ├── generator.py       # Builds the 30-day history
+│   │       └── fixtures.json      # The 14 starting suppliers (the raw numbers)
+│   ├── requirements.txt           # Backend dependencies
+│   ├── railway.json               # Railway deploy config (backend service)
+│   └── .python-version            # Pins Python for the deploy builder
 │
-├── src/                           # The dashboard (React)
-│   ├── routes/                    # The five pages
-│   ├── state/RiskContext.tsx      # Keeps the screen in sync with the server
-│   ├── components/                # Reusable visual pieces (gauges, layout)
-│   ├── data/suppliers.ts          # The data shapes, matching the backend
-│   └── lib/api/client.ts          # Talks to the backend
+├── frontend/                      # The dashboard (React + TanStack Start)
+│   ├── src/
+│   │   ├── routes/                # The five pages
+│   │   ├── state/RiskContext.tsx  # Keeps the screen in sync with the server
+│   │   ├── components/            # Reusable visual pieces (gauges, layout)
+│   │   ├── data/suppliers.ts      # The data shapes, matching the backend
+│   │   └── lib/api/client.ts      # Talks to the backend
+│   ├── package.json               # Frontend dependencies
+│   ├── vite.config.ts             # Build config (Nitro node-server preset)
+│   └── railway.json               # Railway deploy config (frontend service)
 │
-├── package.json                   # Frontend dependencies
 └── README.md                      # This file
 ```
 
@@ -655,19 +716,21 @@ SCMDOJO/
 
 These settings live in `backend/.env` (all optional — sensible defaults are built in).
 
-| Setting | Default | What it controls |
-| --- | --- | --- |
-| `LLM_PROVIDER` | `gemini` | Which AI service to use for recommendations |
-| `GEMINI_API_KEY` | empty | Your AI key (empty = use the built-in playbook) |
-| `SCAN_INTERVAL_SECONDS` | `20` | How often the background watcher checks suppliers |
-| `SCAN_BATCH_SIZE` | `3` | How many suppliers it checks per cycle |
-| `ALERT_COOLDOWN_MINUTES` | `30` | Prevents repeating the same alert too often |
-| `WEIGHT_FINANCIAL` | `0.22` | How much financial risk counts toward the overall score |
-| `WEIGHT_OPERATIONAL` | `0.24` | How much operational risk counts |
-| `WEIGHT_COMPLIANCE` | `0.20` | How much compliance risk counts |
-| `WEIGHT_GEOPOLITICAL` | `0.18` | How much geopolitical risk counts |
-| `WEIGHT_ESG` | `0.16` | How much ESG risk counts |
-| `CORS_ORIGINS` | `*` | Which web addresses are allowed to connect |
+
+| Setting                  | Default  | What it controls                                        |
+| ------------------------ | -------- | ------------------------------------------------------- |
+| `LLM_PROVIDER`           | `gemini` | Which AI service to use for recommendations             |
+| `GEMINI_API_KEY`         | empty    | Your AI key (empty = use the built-in playbook)         |
+| `SCAN_INTERVAL_SECONDS`  | `20`     | How often the background watcher checks suppliers       |
+| `SCAN_BATCH_SIZE`        | `3`      | How many suppliers it checks per cycle                  |
+| `ALERT_COOLDOWN_MINUTES` | `30`     | Prevents repeating the same alert too often             |
+| `WEIGHT_FINANCIAL`       | `0.22`   | How much financial risk counts toward the overall score |
+| `WEIGHT_OPERATIONAL`     | `0.24`   | How much operational risk counts                        |
+| `WEIGHT_COMPLIANCE`      | `0.20`   | How much compliance risk counts                         |
+| `WEIGHT_GEOPOLITICAL`    | `0.18`   | How much geopolitical risk counts                       |
+| `WEIGHT_ESG`             | `0.16`   | How much ESG risk counts                                |
+| `CORS_ORIGINS`           | `*`      | Which web addresses are allowed to connect              |
+
 
 The frontend has one setting, `VITE_API_URL` (default `http://localhost:8000`), which tells the dashboard where the backend is.
 
