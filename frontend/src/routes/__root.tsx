@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { getRuntimeApiUrl } from "../lib/runtime-config";
 import { RiskProvider } from "@/state/RiskContext";
 import { AppLayout } from "@/components/layout/AppLayout";
 
@@ -70,6 +71,14 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: async () => {
+    try {
+      const { apiUrl } = await getRuntimeApiUrl();
+      return { apiUrl };
+    } catch {
+      return { apiUrl: "" };
+    }
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -106,8 +115,16 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const { apiUrl } = Route.useLoaderData();
   return (
     <QueryClientProvider client={queryClient}>
+      {apiUrl ? (
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.__RISK_API_URL__=${JSON.stringify(apiUrl)};`,
+          }}
+        />
+      ) : null}
       <RiskProvider>
         <AppLayout>
           <Outlet />

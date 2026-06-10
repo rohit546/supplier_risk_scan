@@ -1,12 +1,39 @@
 import type { AgentEvent, Alert, Portfolio, Supplier, SupplierDetail } from "@/data/suppliers";
 
-export const API_URL: string =
-  (import.meta.env.VITE_API_URL as string | undefined) ?? "http://localhost:8000";
+/**
+ * Resolve the backend base URL at call time (not module-load time) so a
+ * server-injected runtime value (window.__RISK_API_URL__) is always honoured.
+ *
+ * Priority:
+ *   1. window.__RISK_API_URL__  — injected per-request by the SSR server
+ *      (set from the RISK_API_URL / VITE_API_URL env var at runtime).
+ *   2. import.meta.env.VITE_API_URL — baked in at build time.
+ *   3. http://localhost:8000 — local dev default.
+ *
+ * This makes the deployed app work whether or not the build received the
+ * variable, eliminating the "rebuild required" footgun on hosts like Railway.
+ */
+function resolveBaseUrl(): string {
+  if (typeof window !== "undefined") {
+    const injected = (window as unknown as { __RISK_API_URL__?: string }).__RISK_API_URL__;
+    if (typeof injected === "string" && injected.trim()) {
+      return injected.trim().replace(/\/+$/, "");
+    }
+  }
+  const env = (import.meta.env.VITE_API_URL as string | undefined) ?? "http://localhost:8000";
+  return env.replace(/\/+$/, "");
+}
 
-export const WS_URL = `${API_URL.replace(/^http/, "ws")}/ws/feed`;
+export function getApiUrl(): string {
+  return resolveBaseUrl();
+}
+
+export function getWsUrl(): string {
+  return `${resolveBaseUrl().replace(/^http/, "ws")}/ws/feed`;
+}
 
 async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_URL}${path}`);
+  const res = await fetch(`${getApiUrl()}${path}`);
   if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`);
   return res.json() as Promise<T>;
 }
@@ -41,7 +68,7 @@ export const api = {
   suppliers: () => get<Supplier[]>("/api/suppliers"),
   supplier: (id: string) => get<SupplierDetail>(`/api/suppliers/${id}`),
   createSupplier: async (input: NewSupplierInput): Promise<SupplierDetail> => {
-    const res = await fetch(`${API_URL}/api/suppliers`, {
+    const res = await fetch(`${getApiUrl()}/api/suppliers`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(input),
@@ -61,7 +88,7 @@ export const api = {
   alerts: () => get<Alert[]>("/api/alerts"),
   feed: () => get<AgentEvent[]>("/api/feed"),
   acknowledge: async (ids: string[]): Promise<Alert[]> => {
-    const res = await fetch(`${API_URL}/api/alerts/ack`, {
+    const res = await fetch(`${getApiUrl()}/api/alerts/ack`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ids }),

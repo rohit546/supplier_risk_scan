@@ -24,3 +24,12 @@ export function getServerConfig() {
     //   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
   };
 }
+
+/**
+ * Public backend URL, read at REQUEST time on the server so it reflects the
+ * deployed environment without requiring a rebuild. Injected into the page
+ * as window.__RISK_API_URL__ for the browser to use.
+ */
+export function getPublicApiUrl(): string {
+  return (process.env.RISK_API_URL ?? process.env.VITE_API_URL ?? "").trim();
+}

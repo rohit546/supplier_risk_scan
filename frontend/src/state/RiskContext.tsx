@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useRef, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { api, WS_URL } from "@/lib/api/client";
+import { api, getWsUrl } from "@/lib/api/client";
 import type { AgentEvent, Alert, Portfolio, Supplier } from "@/data/suppliers";
 
 const FEED_LIMIT = 60;
@@ -55,7 +55,7 @@ export function RiskProvider({ children }: { children: ReactNode }) {
     let disposed = false;
 
     const connect = () => {
-      ws = new WebSocket(WS_URL);
+      ws = new WebSocket(getWsUrl());
       ws.onopen = () => {
         wsConnected.current = true;
       };
