@@ -1,0 +1,255 @@
+[
+  {
+    "id": "globaltech-mfg",
+    "name": "GlobalTech Manufacturing Co",
+    "country": "Myanmar",
+    "region": "High-Risk Zone — SE Asia",
+    "category": "Electronics Assembly",
+    "tier": 1,
+    "seed": 101,
+    "raw": {
+      "financial": { "creditScore": 520, "dsoDays": 78, "debtRatio": 0.58, "profitMargin": 0.03, "revenueTrend": -0.5 },
+      "operational": { "onTimeDelivery": 86.0, "defectRate": 4.5, "capacityUtilization": 94 },
+      "compliance": { "isoCertified": false, "certDaysToExpiry": -47, "violations12m": 3, "lastAuditDays": 412 },
+      "geopolitical": { "tradeRestrictions": 2 },
+      "esg": { "environmental": 55, "social": 48, "governance": 50, "newsSentiment": -0.6 }
+    },
+    "drift": {
+      "financial.creditScore": -1.2,
+      "financial.dsoDays": 0.5,
+      "operational.onTimeDelivery": -0.18,
+      "operational.defectRate": 0.06,
+      "esg.newsSentiment": -0.004
+    }
+  },
+  {
+    "id": "reliable-components",
+    "name": "Reliable Components Inc",
+    "country": "Germany",
+    "region": "EU — DACH",
+    "category": "Precision Components",
+    "tier": 1,
+    "seed": 102,
+    "raw": {
+      "financial": { "creditScore": 810, "dsoDays": 38, "debtRatio": 0.25, "profitMargin": 0.14, "revenueTrend": 0.3 },
+      "operational": { "onTimeDelivery": 99.5, "defectRate": 0.5, "capacityUtilization": 78 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 320, "violations12m": 0, "lastAuditDays": 42 },
+      "geopolitical": { "tradeRestrictions": 0 },
+      "esg": { "environmental": 82, "social": 85, "governance": 88, "newsSentiment": 0.7 }
+    },
+    "drift": {}
+  },
+  {
+    "id": "acme-industrial",
+    "name": "Acme Industrial Supplies",
+    "country": "United States",
+    "region": "North America",
+    "category": "Industrial Hardware",
+    "tier": 2,
+    "seed": 103,
+    "raw": {
+      "financial": { "creditScore": 640, "dsoDays": 52, "debtRatio": 0.45, "profitMargin": 0.07, "revenueTrend": -0.1 },
+      "operational": { "onTimeDelivery": 92.5, "defectRate": 1.9, "capacityUtilization": 88 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 200, "violations12m": 1, "lastAuditDays": 188 },
+      "geopolitical": { "tradeRestrictions": 1 },
+      "esg": { "environmental": 38, "social": 52, "governance": 50, "newsSentiment": -0.5 }
+    },
+    "drift": {
+      "esg.environmental": -0.5,
+      "esg.newsSentiment": -0.006,
+      "operational.defectRate": 0.015,
+      "financial.creditScore": -0.6
+    }
+  },
+  {
+    "id": "nordic-steel",
+    "name": "Nordic Steel Forge AS",
+    "country": "Norway",
+    "region": "EU — Nordics",
+    "category": "Raw Materials",
+    "tier": 2,
+    "seed": 104,
+    "raw": {
+      "financial": { "creditScore": 760, "dsoDays": 44, "debtRatio": 0.32, "profitMargin": 0.11, "revenueTrend": 0.1 },
+      "operational": { "onTimeDelivery": 98.2, "defectRate": 0.9, "capacityUtilization": 82 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 250, "violations12m": 0, "lastAuditDays": 90 },
+      "geopolitical": { "tradeRestrictions": 0 },
+      "esg": { "environmental": 48, "social": 76, "governance": 80, "newsSentiment": 0.2 }
+    },
+    "drift": { "esg.environmental": 0.15 }
+  },
+  {
+    "id": "shenzhen-pcb",
+    "name": "Shenzhen PCB Works",
+    "country": "China",
+    "region": "APAC",
+    "category": "PCB Fabrication",
+    "tier": 1,
+    "seed": 105,
+    "raw": {
+      "financial": { "creditScore": 670, "dsoDays": 58, "debtRatio": 0.48, "profitMargin": 0.06, "revenueTrend": -0.15 },
+      "operational": { "onTimeDelivery": 91.0, "defectRate": 2.4, "capacityUtilization": 90 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 150, "violations12m": 1, "lastAuditDays": 120 },
+      "geopolitical": { "tradeRestrictions": 3 },
+      "esg": { "environmental": 50, "social": 55, "governance": 58, "newsSentiment": -0.2 }
+    },
+    "drift": { "geopolitical.tradeRestrictions": 0.02, "financial.dsoDays": 0.2 }
+  },
+  {
+    "id": "iberian-logistics",
+    "name": "Iberian Logistics SL",
+    "country": "Spain",
+    "region": "EU — Iberia",
+    "category": "3PL & Freight",
+    "tier": 3,
+    "seed": 106,
+    "raw": {
+      "financial": { "creditScore": 700, "dsoDays": 48, "debtRatio": 0.40, "profitMargin": 0.08, "revenueTrend": 0.05 },
+      "operational": { "onTimeDelivery": 96.4, "defectRate": 0.4, "capacityUtilization": 75 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 280, "violations12m": 0, "lastAuditDays": 60 },
+      "geopolitical": { "tradeRestrictions": 0 },
+      "esg": { "environmental": 52, "social": 70, "governance": 72, "newsSentiment": 0.1 }
+    },
+    "drift": {}
+  },
+  {
+    "id": "tata-polymers",
+    "name": "Tata Polymer Solutions",
+    "country": "India",
+    "region": "APAC",
+    "category": "Plastics & Resins",
+    "tier": 2,
+    "seed": 107,
+    "raw": {
+      "financial": { "creditScore": 660, "dsoDays": 55, "debtRatio": 0.44, "profitMargin": 0.07, "revenueTrend": 0.1 },
+      "operational": { "onTimeDelivery": 93.1, "defectRate": 1.8, "capacityUtilization": 86 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 180, "violations12m": 0, "lastAuditDays": 145 },
+      "geopolitical": { "tradeRestrictions": 1 },
+      "esg": { "environmental": 56, "social": 60, "governance": 62, "newsSentiment": 0.05 }
+    },
+    "drift": { "operational.onTimeDelivery": -0.05, "operational.defectRate": 0.01 }
+  },
+  {
+    "id": "alpine-precision",
+    "name": "Alpine Precision GmbH",
+    "country": "Switzerland",
+    "region": "EU — DACH",
+    "category": "Precision Optics",
+    "tier": 1,
+    "seed": 108,
+    "raw": {
+      "financial": { "creditScore": 790, "dsoDays": 40, "debtRatio": 0.28, "profitMargin": 0.16, "revenueTrend": 0.2 },
+      "operational": { "onTimeDelivery": 99.1, "defectRate": 0.3, "capacityUtilization": 80 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 400, "violations12m": 0, "lastAuditDays": 38 },
+      "geopolitical": { "tradeRestrictions": 0 },
+      "esg": { "environmental": 78, "social": 82, "governance": 86, "newsSentiment": 0.6 }
+    },
+    "drift": {}
+  },
+  {
+    "id": "rio-grande-pkg",
+    "name": "Rio Grande Packaging",
+    "country": "Mexico",
+    "region": "LATAM",
+    "category": "Packaging",
+    "tier": 3,
+    "seed": 109,
+    "raw": {
+      "financial": { "creditScore": 630, "dsoDays": 60, "debtRatio": 0.50, "profitMargin": 0.05, "revenueTrend": -0.05 },
+      "operational": { "onTimeDelivery": 92.0, "defectRate": 1.1, "capacityUtilization": 84 },
+      "compliance": { "isoCertified": false, "certDaysToExpiry": -15, "violations12m": 0, "lastAuditDays": 220 },
+      "geopolitical": { "tradeRestrictions": 1 },
+      "esg": { "environmental": 58, "social": 54, "governance": 56, "newsSentiment": -0.1 }
+    },
+    "drift": { "financial.dsoDays": 0.15 }
+  },
+  {
+    "id": "kyoto-semis",
+    "name": "Kyoto Semiconductor KK",
+    "country": "Japan",
+    "region": "APAC",
+    "category": "Semiconductors",
+    "tier": 1,
+    "seed": 110,
+    "raw": {
+      "financial": { "creditScore": 770, "dsoDays": 42, "debtRatio": 0.30, "profitMargin": 0.13, "revenueTrend": 0.15 },
+      "operational": { "onTimeDelivery": 97.8, "defectRate": 0.4, "capacityUtilization": 91 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 300, "violations12m": 0, "lastAuditDays": 72 },
+      "geopolitical": { "tradeRestrictions": 2 },
+      "esg": { "environmental": 70, "social": 75, "governance": 80, "newsSentiment": 0.5 }
+    },
+    "drift": {}
+  },
+  {
+    "id": "british-chem",
+    "name": "British Chemicals Ltd",
+    "country": "United Kingdom",
+    "region": "EU-UK",
+    "category": "Specialty Chemicals",
+    "tier": 2,
+    "seed": 111,
+    "raw": {
+      "financial": { "creditScore": 600, "dsoDays": 62, "debtRatio": 0.52, "profitMargin": 0.04, "revenueTrend": -0.2 },
+      "operational": { "onTimeDelivery": 90.0, "defectRate": 2.1, "capacityUtilization": 87 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 90, "violations12m": 2, "lastAuditDays": 165 },
+      "geopolitical": { "tradeRestrictions": 1 },
+      "esg": { "environmental": 46, "social": 58, "governance": 54, "newsSentiment": -0.25 }
+    },
+    "drift": { "compliance.certDaysToExpiry": -1.0, "financial.creditScore": -0.5 }
+  },
+  {
+    "id": "brazil-agro",
+    "name": "Brazil AgroFiber SA",
+    "country": "Brazil",
+    "region": "LATAM",
+    "category": "Natural Fibers",
+    "tier": 3,
+    "seed": 112,
+    "raw": {
+      "financial": { "creditScore": 590, "dsoDays": 68, "debtRatio": 0.55, "profitMargin": 0.04, "revenueTrend": -0.3 },
+      "operational": { "onTimeDelivery": 88.0, "defectRate": 3.2, "capacityUtilization": 89 },
+      "compliance": { "isoCertified": false, "certDaysToExpiry": -120, "violations12m": 2, "lastAuditDays": 290 },
+      "geopolitical": { "tradeRestrictions": 1 },
+      "esg": { "environmental": 22, "social": 40, "governance": 44, "newsSentiment": -0.45 }
+    },
+    "drift": {
+      "esg.environmental": -0.3,
+      "esg.newsSentiment": -0.003,
+      "operational.defectRate": 0.03
+    }
+  },
+  {
+    "id": "hanoi-textiles",
+    "name": "Hanoi Textile Group",
+    "country": "Vietnam",
+    "region": "APAC",
+    "category": "Technical Textiles",
+    "tier": 2,
+    "seed": 113,
+    "raw": {
+      "financial": { "creditScore": 650, "dsoDays": 50, "debtRatio": 0.42, "profitMargin": 0.06, "revenueTrend": 0.2 },
+      "operational": { "onTimeDelivery": 94.0, "defectRate": 1.4, "capacityUtilization": 92 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 130, "violations12m": 1, "lastAuditDays": 160 },
+      "geopolitical": { "tradeRestrictions": 1 },
+      "esg": { "environmental": 50, "social": 46, "governance": 55, "newsSentiment": -0.05 }
+    },
+    "drift": { "operational.capacityUtilization": 0.05 }
+  },
+  {
+    "id": "baltic-fasteners",
+    "name": "Baltic Fasteners Sp. z o.o.",
+    "country": "Poland",
+    "region": "EU — Central",
+    "category": "Fasteners & Hardware",
+    "tier": 3,
+    "seed": 114,
+    "raw": {
+      "financial": { "creditScore": 720, "dsoDays": 46, "debtRatio": 0.36, "profitMargin": 0.09, "revenueTrend": 0.1 },
+      "operational": { "onTimeDelivery": 96.8, "defectRate": 0.8, "capacityUtilization": 79 },
+      "compliance": { "isoCertified": true, "certDaysToExpiry": 220, "violations12m": 0, "lastAuditDays": 110 },
+      "geopolitical": { "tradeRestrictions": 0 },
+      "esg": { "environmental": 60, "social": 66, "governance": 68, "newsSentiment": 0.15 }
+    },
+    "drift": {}
+  }
+]
