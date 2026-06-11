@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request
 
+from app.config import get_settings
 from app.schemas import AgentEvent, Health, Portfolio
 
 router = APIRouter(prefix="/api", tags=["portfolio"])
@@ -9,8 +10,9 @@ router = APIRouter(prefix="/api", tags=["portfolio"])
 async def portfolio(request: Request) -> Portfolio:
     store = request.app.state.store
     llm = request.app.state.llm
+    settings = get_settings()
     async with store.lock:
-        return store.portfolio(llm.provider, llm.active)
+        return store.portfolio(llm.provider, llm.active, settings.llm_mode)
 
 
 @router.get("/feed", response_model=list[AgentEvent])

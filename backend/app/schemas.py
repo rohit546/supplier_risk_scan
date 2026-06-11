@@ -102,8 +102,27 @@ class Alert(BaseModel):
     recommendation: str
     reasoning: str = ""
     mitigationSteps: list[str] = []
-    source: Literal["llm", "fallback"] = "fallback"
+    source: Literal["llm", "fallback", "pending"] = "fallback"
     acknowledged: bool = False
+    assessedAt: Optional[str] = None
+
+
+class AssessmentMeta(BaseModel):
+    """Diagnostic trace of a manual LLM assessment, surfaced to the UI so an
+    operator can visually verify a real provider call happened."""
+    provider: str
+    model: str
+    active: bool
+    source: Literal["llm", "fallback"]
+    latencyMs: int
+    prompt: str
+    rawResponse: str = ""
+    error: Optional[str] = None
+
+
+class AssessmentResult(BaseModel):
+    alert: Alert
+    meta: AssessmentMeta
 
 
 class AgentEvent(BaseModel):
@@ -132,6 +151,8 @@ class Portfolio(BaseModel):
     agentStatus: str
     llmProvider: str
     llmActive: bool
+    llmMode: str = "manual"
+    pendingAssessments: int = 0
 
 
 class AckRequest(BaseModel):

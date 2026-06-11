@@ -1,4 +1,11 @@
-import type { AgentEvent, Alert, Portfolio, Supplier, SupplierDetail } from "@/data/suppliers";
+import type {
+  AgentEvent,
+  Alert,
+  AssessmentResult,
+  Portfolio,
+  Supplier,
+  SupplierDetail,
+} from "@/data/suppliers";
 
 /**
  * Resolve the backend base URL at call time (not module-load time) so a
@@ -87,6 +94,23 @@ export const api = {
   },
   alerts: () => get<Alert[]>("/api/alerts"),
   feed: () => get<AgentEvent[]>("/api/feed"),
+  assessAlert: async (id: string): Promise<AssessmentResult> => {
+    const res = await fetch(`${getApiUrl()}/api/alerts/${id}/assess`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (!res.ok) {
+      let detail = `POST /api/alerts/${id}/assess failed: ${res.status}`;
+      try {
+        const body = (await res.json()) as { detail?: unknown };
+        if (typeof body.detail === "string") detail = body.detail;
+      } catch {
+        /* keep default */
+      }
+      throw new Error(detail);
+    }
+    return res.json() as Promise<AssessmentResult>;
+  },
   acknowledge: async (ids: string[]): Promise<Alert[]> => {
     const res = await fetch(`${getApiUrl()}/api/alerts/ack`, {
       method: "POST",

@@ -253,13 +253,27 @@ class MonitorAgent:
             "category": st.category,
             "tier": st.tier,
         }
-        assessment = await self.llm.assess_alert(
-            st.name, category, severity, title, breach, snapshot
-        )
+
+        manual = self.settings.llm_mode.lower() == "manual"
+
+        if manual:
+            # Defer reasoning: raise a pending alert; the LLM is only called
+            # when an operator explicitly requests an assessment.
+            assessment = {
+                "recommendation": "",
+                "reasoning": "",
+                "mitigation_steps": [],
+                "source": "pending",
+            }
+        else:
+            assessment = await self.llm.assess_alert(
+                st.name, category, severity, title, breach, snapshot
+            )
 
         async with self.store.lock:
+            alert_id = self.store.next_id("alert")
             alert = Alert(
-                id=self.store.next_id("alert"),
+                id=alert_id,
                 supplierId=st.id,
                 supplierName=st.name,
                 category=category,  # type: ignore[arg-type]
@@ -270,15 +284,17 @@ class MonitorAgent:
                 recommendation=assessment["recommendation"],
                 reasoning=assessment["reasoning"],
                 mitigationSteps=assessment["mitigation_steps"],
-                source=assessment["source"],
+                source=assessment["source"],  # type: ignore[arg-type]
             )
             self.store.add_alert(alert)
+            self.store.alert_snapshots[alert_id] = snapshot
         await self.broadcaster.broadcast({"type": "alert", "payload": alert.model_dump()})
 
         await self._emit_event(
             st.name, "alert",
             f"{severity.capitalize()}-severity alert raised",
-            f"{title} — {category} dimension.",
+            f"{title} — {category} dimension."
+            + (" Awaiting operator AI assessment." if manual else ""),
         )
         if assessment["mitigation_steps"]:
             await self._emit_event(

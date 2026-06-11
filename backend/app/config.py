@@ -18,6 +18,14 @@ class Settings(BaseSettings):
     anthropic_model: str = "claude-3-5-haiku-latest"
     llm_timeout_seconds: float = 20.0
 
+    # LLM trigger mode:
+    #   "manual" (default) — alerts are raised in a "pending" state and the
+    #     LLM is only called when an operator explicitly requests an assessment
+    #     (POST /api/alerts/{id}/assess). Best for demos/assessments: the call
+    #     is observable and intentional.
+    #   "auto" — the agent calls the LLM automatically the moment an alert fires.
+    llm_mode: str = "manual"
+
     # Agent loop
     scan_interval_seconds: float = 20.0
     scan_batch_size: int = 3

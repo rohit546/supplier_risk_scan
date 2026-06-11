@@ -8,6 +8,7 @@ the system always works out of the box."""
 import json
 import logging
 import re
+import time
 from typing import Any, Optional
 
 import httpx
@@ -35,6 +36,14 @@ class LLMClient:
     def active(self) -> bool:
         return bool(self.api_key)
 
+    @property
+    def model_name(self) -> str:
+        return {
+            "gemini": self.settings.gemini_model,
+            "openai": self.settings.openai_model,
+            "anthropic": self.settings.anthropic_model,
+        }.get(self.provider, "")
+
     async def assess_alert(
         self,
         supplier_name: str,
@@ -45,22 +54,63 @@ class LLMClient:
         snapshot: dict[str, Any],
     ) -> dict[str, Any]:
         """Returns {recommendation, reasoning, mitigation_steps, source}."""
+        result, _ = await self.assess_alert_verbose(
+            supplier_name, category, severity, title, breach, snapshot
+        )
+        return result
+
+    async def assess_alert_verbose(
+        self,
+        supplier_name: str,
+        category: str,
+        severity: str,
+        title: str,
+        breach: str,
+        snapshot: dict[str, Any],
+    ) -> tuple[dict[str, Any], dict[str, Any]]:
+        """Like assess_alert but also returns a diagnostic trace (prompt sent,
+        raw provider response, latency, provider/model, error) so the UI can
+        prove a real LLM call happened. Returns (result, meta)."""
+        prompt = build_alert_prompt(supplier_name, category, severity, title, breach, snapshot)
+        meta: dict[str, Any] = {
+            "provider": self.provider,
+            "model": self.model_name,
+            "active": self.active,
+            "source": "fallback",
+            "latencyMs": 0,
+            "prompt": prompt,
+            "rawResponse": "",
+            "error": None,
+        }
+        started = time.perf_counter()
+
         if self.active:
-            prompt = build_alert_prompt(supplier_name, category, severity, title, breach, snapshot)
             try:
                 text = await self._call(prompt)
+                meta["rawResponse"] = text
                 parsed = self._parse_json(text)
                 if parsed:
-                    return {
-                        "recommendation": str(parsed.get("recommendation", "")).strip(),
-                        "reasoning": str(parsed.get("reasoning", "")).strip(),
-                        "mitigation_steps": [str(s) for s in parsed.get("mitigation_steps", [])][:4],
-                        "source": "llm",
-                    }
+                    meta["source"] = "llm"
+                    meta["latencyMs"] = round((time.perf_counter() - started) * 1000)
+                    return (
+                        {
+                            "recommendation": str(parsed.get("recommendation", "")).strip(),
+                            "reasoning": str(parsed.get("reasoning", "")).strip(),
+                            "mitigation_steps": [str(s) for s in parsed.get("mitigation_steps", [])][:4],
+                            "source": "llm",
+                        },
+                        meta,
+                    )
+                meta["error"] = "LLM returned an unparseable (non-JSON) response"
                 log.warning("LLM returned unparseable response; using fallback")
             except Exception as exc:  # network, auth, rate-limit — degrade gracefully
+                meta["error"] = f"{type(exc).__name__}: {exc}"
                 log.warning("LLM call failed (%s); using fallback", exc)
-        return self._fallback(supplier_name, category, severity, breach, snapshot)
+        else:
+            meta["error"] = f"No API key configured for provider '{self.provider}'"
+
+        meta["latencyMs"] = round((time.perf_counter() - started) * 1000)
+        return self._fallback(supplier_name, category, severity, breach, snapshot), meta
 
     # ── Provider calls ─────────────────────────────────────────
 

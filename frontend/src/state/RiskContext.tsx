@@ -1,7 +1,13 @@
 import { createContext, useContext, useEffect, useMemo, useRef, type ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, getWsUrl } from "@/lib/api/client";
-import type { AgentEvent, Alert, Portfolio, Supplier } from "@/data/suppliers";
+import type {
+  AgentEvent,
+  Alert,
+  AssessmentResult,
+  Portfolio,
+  Supplier,
+} from "@/data/suppliers";
 
 const FEED_LIMIT = 60;
 
@@ -12,6 +18,7 @@ type Ctx = {
   portfolio: Portfolio | undefined;
   acknowledge: (id: string) => void;
   acknowledgeMany: (ids: string[]) => void;
+  assessAlert: (id: string) => Promise<AssessmentResult>;
   getSupplier: (id: string) => Supplier | undefined;
   portfolioRisk: number;
   criticalCount: number;
@@ -124,6 +131,18 @@ export function RiskProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  // ── Manual LLM assessment (operator-triggered) ──────────────
+  const assessMutation = useMutation({
+    mutationFn: api.assessAlert,
+    onSuccess: (result) => {
+      queryClient.setQueryData<Alert[]>(["alerts"], (prev = []) =>
+        prev.map((a) => (a.id === result.alert.id ? result.alert : a)),
+      );
+      void queryClient.invalidateQueries({ queryKey: ["portfolio"] });
+      void queryClient.invalidateQueries({ queryKey: ["feed"] });
+    },
+  });
+
   const suppliers = suppliersQ.data ?? [];
   const alerts = alertsQ.data ?? [];
   const agentFeed = feedQ.data ?? [];
@@ -150,11 +169,12 @@ export function RiskProvider({ children }: { children: ReactNode }) {
       unackCount,
       acknowledge: (id) => ackMutation.mutate([id]),
       acknowledgeMany: (ids) => ackMutation.mutate(ids),
+      assessAlert: (id) => assessMutation.mutateAsync(id),
       getSupplier: (id) => suppliers.find((s) => s.id === id),
       isLoading: suppliersQ.isPending,
       liveConnected: wsConnected.current,
     };
-  }, [suppliers, alerts, agentFeed, portfolio, suppliersQ.isPending, ackMutation]);
+  }, [suppliers, alerts, agentFeed, portfolio, suppliersQ.isPending, ackMutation, assessMutation]);
 
   return <RiskCtx.Provider value={value}>{children}</RiskCtx.Provider>;
 }

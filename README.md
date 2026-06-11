@@ -636,6 +636,19 @@ GEMINI_API_KEY=your_free_key_here
 
 (A free key is available from Google AI Studio.) Alerts will then show an "AI REASONED" badge instead of "PLAYBOOK".
 
+### Manual vs automatic LLM assessment
+
+The LLM is controlled by `LLM_MODE` (default **`manual`**):
+
+- **`manual`** — alerts are raised in a **`pending`** state and **no LLM call is made automatically**. On the Alerts page, an operator clicks **"Run AI Assessment"** on a specific alert to invoke the model. This is ideal for demos/assessments because every model call is **deliberate and observable**.
+- **`auto`** — the agent calls the LLM the instant an alert fires (original behaviour).
+
+When an assessment runs, the Alerts UI shows an **LLM call trace** proving the call routed to the model: **provider/model**, whether it hit the **live LLM** or the **playbook fallback**, the **response latency (ms)**, and expandable views of the **exact prompt sent** and the **raw model response**. A live call takes ~1–3s and returns raw JSON; the playbook is instant — so the distinction is visually unambiguous.
+
+> To see real `LIVE LLM` traces (not `PLAYBOOK FALLBACK`), a valid `GEMINI_API_KEY` must be set on the backend. Without a key the trace honestly reports "API key absent" and falls back.
+
+API: `POST /api/alerts/{id}/assess` runs one assessment and returns `{ alert, meta }`.
+
 ---
 
 ## 13b. Deploying to Railway

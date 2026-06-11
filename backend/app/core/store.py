@@ -65,6 +65,9 @@ class Store:
         self.lock = asyncio.Lock()
         self.suppliers: dict[str, SupplierState] = {}
         self.alerts: list[Alert] = []
+        # Snapshot of metrics captured when each alert fired, keyed by alert id.
+        # Used to feed a faithful context to the LLM on manual assessment.
+        self.alert_snapshots: dict[str, dict[str, Any]] = {}
         self.feed: deque[AgentEvent] = deque(maxlen=60)
         self.scans_completed = 0
         self.alerts_raised = 0
@@ -214,7 +217,9 @@ class Store:
             explanation=explain_scores(raw_model, st.scores),
         )
 
-    def portfolio(self, llm_provider: str, llm_active: bool) -> Portfolio:
+    def portfolio(
+        self, llm_provider: str, llm_active: bool, llm_mode: str = "manual"
+    ) -> Portfolio:
         states = list(self.suppliers.values())
         total = len(states) or 1
         dist = {"low": 0, "medium": 0, "high": 0}
@@ -233,7 +238,12 @@ class Store:
             agentStatus="active",
             llmProvider=llm_provider,
             llmActive=llm_active,
+            llmMode=llm_mode,
+            pendingAssessments=sum(1 for a in self.alerts if a.source == "pending"),
         )
+
+    def get_alert(self, alert_id: str) -> Optional[Alert]:
+        return next((a for a in self.alerts if a.id == alert_id), None)
 
     # ── Mutations ──────────────────────────────────────────────
 
