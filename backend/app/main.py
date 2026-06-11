@@ -28,6 +28,7 @@ async def lifespan(app: FastAPI):
     app.state.store = store
     app.state.llm = llm
     app.state.broadcaster = broadcaster
+    app.state.agent = agent
 
     async def boot() -> None:
         store.seed()

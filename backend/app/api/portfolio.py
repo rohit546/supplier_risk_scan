@@ -1,9 +1,17 @@
 from fastapi import APIRouter, Request
 
 from app.config import get_settings
-from app.schemas import AgentEvent, Health, Portfolio
+from app.schemas import AgentEvent, Health, Portfolio, SweepResult
 
 router = APIRouter(prefix="/api", tags=["portfolio"])
+
+
+@router.post("/sweep", response_model=SweepResult)
+async def sweep(request: Request) -> SweepResult:
+    """Run an immediate full-portfolio risk sweep (operator-triggered)."""
+    agent = request.app.state.agent
+    result = await agent.sweep()
+    return SweepResult(**result)
 
 
 @router.get("/portfolio", response_model=Portfolio)

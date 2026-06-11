@@ -159,6 +159,11 @@ class AckRequest(BaseModel):
     ids: list[str]
 
 
+class SweepResult(BaseModel):
+    scanned: int
+    newAlerts: int
+
+
 class NewSupplierRequest(BaseModel):
     """Manual supplier onboarding payload. Bounds mirror the mock-data
     generator's METRIC_BOUNDS so manually-added suppliers stay in the same

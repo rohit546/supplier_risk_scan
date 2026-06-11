@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { getRuntimeApiUrl } from "../lib/runtime-config";
 import { RiskProvider } from "@/state/RiskContext";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -129,6 +130,7 @@ function RootComponent() {
         <AppLayout>
           <Outlet />
         </AppLayout>
+        <Toaster position="bottom-right" richColors closeButton />
       </RiskProvider>
     </QueryClientProvider>
   );

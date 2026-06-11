@@ -143,6 +143,29 @@ class MonitorAgent:
         for sid in batch:
             await self._scan_supplier(sid)
 
+    async def sweep(self) -> dict[str, int]:
+        """On-demand full portfolio scan: re-evaluate every supplier now,
+        instead of waiting for the agent's batched cadence. Returns a summary."""
+        async with self.store.lock:
+            ids = list(self.store.suppliers.keys())
+            alerts_before = self.store.alerts_raised
+        await self._emit_event(
+            "Risk engine", "scan",
+            "Manual risk sweep initiated",
+            f"Operator triggered a full portfolio sweep across {len(ids)} suppliers.",
+        )
+        for sid in ids:
+            await self._scan_supplier(sid)
+        async with self.store.lock:
+            new_alerts = self.store.alerts_raised - alerts_before
+        await self._emit_event(
+            "Risk engine", "update",
+            "Manual risk sweep complete",
+            f"{len(ids)} suppliers re-scored across 5 dimensions; "
+            f"{new_alerts} new alert(s) raised.",
+        )
+        return {"scanned": len(ids), "newAlerts": new_alerts}
+
     async def _scan_supplier(self, sid: str) -> None:
         async with self.store.lock:
             st = self.store.suppliers.get(sid)

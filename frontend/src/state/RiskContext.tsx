@@ -19,6 +19,7 @@ type Ctx = {
   acknowledge: (id: string) => void;
   acknowledgeMany: (ids: string[]) => void;
   assessAlert: (id: string) => Promise<AssessmentResult>;
+  runSweep: () => Promise<{ scanned: number; newAlerts: number }>;
   getSupplier: (id: string) => Supplier | undefined;
   portfolioRisk: number;
   criticalCount: number;
@@ -143,6 +144,17 @@ export function RiskProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  // ── Manual full-portfolio risk sweep ────────────────────────
+  const sweepMutation = useMutation({
+    mutationFn: api.runSweep,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+      void queryClient.invalidateQueries({ queryKey: ["portfolio"] });
+      void queryClient.invalidateQueries({ queryKey: ["alerts"] });
+      void queryClient.invalidateQueries({ queryKey: ["feed"] });
+    },
+  });
+
   const suppliers = suppliersQ.data ?? [];
   const alerts = alertsQ.data ?? [];
   const agentFeed = feedQ.data ?? [];
@@ -170,11 +182,12 @@ export function RiskProvider({ children }: { children: ReactNode }) {
       acknowledge: (id) => ackMutation.mutate([id]),
       acknowledgeMany: (ids) => ackMutation.mutate(ids),
       assessAlert: (id) => assessMutation.mutateAsync(id),
+      runSweep: () => sweepMutation.mutateAsync(),
       getSupplier: (id) => suppliers.find((s) => s.id === id),
       isLoading: suppliersQ.isPending,
       liveConnected: wsConnected.current,
     };
-  }, [suppliers, alerts, agentFeed, portfolio, suppliersQ.isPending, ackMutation, assessMutation]);
+  }, [suppliers, alerts, agentFeed, portfolio, suppliersQ.isPending, ackMutation, assessMutation, sweepMutation]);
 
   return <RiskCtx.Provider value={value}>{children}</RiskCtx.Provider>;
 }

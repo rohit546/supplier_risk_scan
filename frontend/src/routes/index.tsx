@@ -1,14 +1,17 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
 import {
   BarChart, Bar, ResponsiveContainer, Cell, Tooltip, XAxis,
 } from "recharts";
 import {
   AlertTriangle, Building2, ArrowUpRight, Shield, CheckCircle2,
-  TrendingUp, RefreshCw, FileDown, Radar,
+  TrendingUp, RefreshCw, FileDown, Radar, Loader2,
 } from "lucide-react";
 import { useRisk } from "@/state/RiskContext";
 import { RadialGauge, RiskBadge, Sparkline } from "@/components/risk/RiskPrimitives";
 import { riskLevel } from "@/data/suppliers";
+import { exportPortfolioPdf } from "@/lib/report/exportPdf";
 import { cn, relTime } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
@@ -22,7 +25,40 @@ export const Route = createFileRoute("/")({
 });
 
 function DashboardPage() {
-  const { suppliers, agentFeed, portfolioRisk, criticalCount, portfolio } = useRisk();
+  const { suppliers, alerts, agentFeed, portfolioRisk, criticalCount, portfolio, runSweep } = useRisk();
+  const [exporting, setExporting] = useState(false);
+  const [sweeping, setSweeping] = useState(false);
+
+  const handleExport = async () => {
+    if (exporting) return;
+    setExporting(true);
+    const t = toast.loading("Generating PDF report…");
+    try {
+      await exportPortfolioPdf({ suppliers, alerts, portfolio });
+      toast.success("Report downloaded", { id: t, description: "riskscan-report PDF saved." });
+    } catch (e) {
+      toast.error("Export failed", { id: t, description: e instanceof Error ? e.message : "Unknown error" });
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const handleSweep = async () => {
+    if (sweeping) return;
+    setSweeping(true);
+    const t = toast.loading("Running full risk sweep…");
+    try {
+      const res = await runSweep();
+      toast.success("Risk sweep complete", {
+        id: t,
+        description: `${res.scanned} suppliers re-scored · ${res.newAlerts} new alert${res.newAlerts === 1 ? "" : "s"}.`,
+      });
+    } catch (e) {
+      toast.error("Sweep failed", { id: t, description: e instanceof Error ? e.message : "Unknown error" });
+    } finally {
+      setSweeping(false);
+    }
+  };
 
   const buckets = { low: 0, medium: 0, high: 0 };
   suppliers.forEach((s) => buckets[riskLevel(s.overall)]++);
@@ -47,11 +83,21 @@ function DashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-2.5">
-          <button className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-xs font-semibold text-foreground hover:shadow-premium transition-shadow cursor-pointer">
-            <FileDown className="h-3.5 w-3.5" /> Export report
+          <button
+            onClick={handleExport}
+            disabled={exporting || suppliers.length === 0}
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-xs font-semibold text-foreground hover:shadow-premium transition-shadow cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {exporting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <FileDown className="h-3.5 w-3.5" />}
+            {exporting ? "Exporting…" : "Export report"}
           </button>
-          <button className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2.5 text-xs font-semibold hover:opacity-90 transition cursor-pointer">
-            <RefreshCw className="h-3.5 w-3.5" /> Run risk sweep
+          <button
+            onClick={handleSweep}
+            disabled={sweeping}
+            className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2.5 text-xs font-semibold hover:opacity-90 transition cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            {sweeping ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
+            {sweeping ? "Sweeping…" : "Run risk sweep"}
           </button>
         </div>
       </div>

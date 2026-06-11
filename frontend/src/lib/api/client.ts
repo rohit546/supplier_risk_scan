@@ -100,6 +100,11 @@ export const api = {
   },
   alerts: () => get<Alert[]>("/api/alerts"),
   feed: () => get<AgentEvent[]>("/api/feed"),
+  runSweep: async (): Promise<{ scanned: number; newAlerts: number }> => {
+    const res = await fetch(`${getApiUrl()}/api/sweep`, { method: "POST" });
+    if (!res.ok) throw new Error(`POST /api/sweep failed: ${res.status}`);
+    return res.json() as Promise<{ scanned: number; newAlerts: number }>;
+  },
   assessAlert: async (id: string): Promise<AssessmentResult> => {
     const res = await fetch(`${getApiUrl()}/api/alerts/${id}/assess`, {
       method: "POST",
