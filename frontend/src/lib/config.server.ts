@@ -31,5 +31,7 @@ export function getServerConfig() {
  * as window.__RISK_API_URL__ for the browser to use.
  */
 export function getPublicApiUrl(): string {
-  return (process.env.RISK_API_URL ?? process.env.VITE_API_URL ?? "").trim();
+  return (process.env.RISK_API_URL ?? process.env.VITE_API_URL ?? "")
+    .trim()
+    .replace(/\/+$/, "");
 }

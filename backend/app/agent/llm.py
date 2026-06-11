@@ -103,9 +103,14 @@ class LLMClient:
                     )
                 meta["error"] = "LLM returned an unparseable (non-JSON) response"
                 log.warning("LLM returned unparseable response; using fallback")
+            except httpx.HTTPStatusError as exc:
+                body = exc.response.text[:300] if exc.response is not None else ""
+                meta["error"] = f"HTTP {exc.response.status_code}: {body or exc}"
+                log.warning("LLM HTTP error %s: %s", exc.response.status_code, body[:200])
             except Exception as exc:  # network, auth, rate-limit — degrade gracefully
-                meta["error"] = f"{type(exc).__name__}: {exc}"
-                log.warning("LLM call failed (%s); using fallback", exc)
+                detail = str(exc).strip() or repr(exc)
+                meta["error"] = f"{type(exc).__name__}: {detail}"
+                log.warning("LLM call failed (%s); using fallback", detail)
         else:
             meta["error"] = f"No API key configured for provider '{self.provider}'"
 

@@ -35,8 +35,14 @@ export function getApiUrl(): string {
   return resolveBaseUrl();
 }
 
+/** Build a WebSocket URL without accidental `//ws/feed` double slashes. */
 export function getWsUrl(): string {
-  return `${resolveBaseUrl().replace(/^http/, "ws")}/ws/feed`;
+  const base = resolveBaseUrl();
+  if (!base) {
+    throw new Error("API base URL is not configured (set VITE_API_URL on the frontend service)");
+  }
+  const wsBase = base.replace(/^https:/i, "wss:").replace(/^http:/i, "ws:");
+  return new URL("/ws/feed", wsBase).href;
 }
 
 async function get<T>(path: string): Promise<T> {
