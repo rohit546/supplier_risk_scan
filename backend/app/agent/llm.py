@@ -143,14 +143,38 @@ class LLMClient:
                 "contents": [{"role": "user", "parts": [{"text": prompt}]}],
                 "generationConfig": {
                     "temperature": 0.4,
-                    "maxOutputTokens": 600,
+                    # Generous ceiling: Gemini 2.5 "thinking" models spend tokens
+                    # on internal reasoning; a low cap truncated the JSON answer.
+                    "maxOutputTokens": 2048,
                     "responseMimeType": "application/json",
+                    # Disable thinking so the whole budget goes to the answer
+                    # (ignored by non-thinking models).
+                    "thinkingConfig": {"thinkingBudget": 0},
                 },
             },
         )
         resp.raise_for_status()
         data = resp.json()
-        return data["candidates"][0]["content"]["parts"][0]["text"]
+        return self._extract_gemini_text(data)
+
+    @staticmethod
+    def _extract_gemini_text(data: dict[str, Any]) -> str:
+        """Pull text from a Gemini response, tolerating multi-part content and
+        surfacing a clear error when the model truncated or returned nothing."""
+        candidates = data.get("candidates") or []
+        if not candidates:
+            feedback = data.get("promptFeedback", {})
+            raise ValueError(f"Gemini returned no candidates (feedback: {feedback})")
+        cand = candidates[0]
+        parts = (cand.get("content") or {}).get("parts") or []
+        text = "".join(p.get("text", "") for p in parts).strip()
+        if not text:
+            reason = cand.get("finishReason", "UNKNOWN")
+            raise ValueError(
+                f"Gemini returned empty text (finishReason={reason}); "
+                "likely token budget exhausted by thinking"
+            )
+        return text
 
     async def _call_openai(self, client: httpx.AsyncClient, prompt: str) -> str:
         resp = await client.post(
